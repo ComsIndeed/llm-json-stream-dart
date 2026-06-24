@@ -1,6 +1,20 @@
+## 1.0.0
+### Added
+- **Root Convenience Getters**: Added `.asMap`, `.stream`, `.future`, and `.asList()` directly to `JsonStreamParser` for much simpler root-level interactions.
+  ```dart
+  final parser = JsonStreamParser(stream);
+  // Easy root object operations:
+  parser.stream.listen((mapSnapshot) => print(mapSnapshot));
+  final completeMap = await parser.future;
+  ```
+
+### Fixed
+- **Native Idempotency (Flicker Fix)**: Wrapped `StringPropertyStream`, `MapPropertyStream`, and `ListPropertyStream` replayable streams in `ReplayableBroadcastStream` caching wrappers. This provides perfect reference identity stability for Flutter's `StreamBuilder` and animations during widget rebuilds, while perfectly preserving multiple subscriptions and late-subscriber buffer replay.
+
 ## 0.4.7
 ### Refactored
 - **Removed unused variables in JsonStreamParser**
+
 
 ## 0.4.6
 ### Documentation

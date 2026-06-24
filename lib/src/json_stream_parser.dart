@@ -139,6 +139,19 @@ class JsonStreamParser with PropertyGetterMixin {
     );
   }
 
+  /// Returns the root JSON object as a [MapPropertyStream].
+  MapPropertyStream get asMap => getMapProperty('');
+
+  /// A stream that emits the root map snapshots as they are parsed.
+  Stream<Map<String, dynamic>> get stream => asMap.stream;
+
+  /// A future that completes with the full parsed root JSON object.
+  Future<Map<String, dynamic>> get future => asMap.future;
+
+  /// Returns the root JSON array as a [ListPropertyStream].
+  ListPropertyStream<E> asList<E extends Object?>() => getListProperty<E>('');
+
+
   /// Whether to automatically stop parsing when the root JSON object completes.
   ///
   /// When true (default), the parser will dispose itself after the root

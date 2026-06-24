@@ -263,6 +263,25 @@ Let me think about this step by step:
         expect(finalValue, equals('test'));
       });
 
+      test('should not drop characters on partial thinking tag mismatch inside JSON string', () async {
+        if (verbose) print('\n[TEST] Partial tag mismatch inside JSON string');
+
+        final json = '{"text": "I love <the color and <thi is nice"}';
+        if (verbose) print('[JSON] $json');
+
+        final stream = streamTextInChunks(
+          text: json,
+          chunkSize: 3,
+          interval: Duration(milliseconds: 10),
+        );
+        final parser = JsonStreamParser(stream, skipThoughts: true);
+
+        final textStream = parser.getStringProperty("text");
+        final finalValue = await textStream.future.withTestTimeout();
+
+        expect(finalValue, equals('I love <the color and <thi is nice'));
+      });
+
       test('should handle think tags split across chunks', () async {
         if (verbose) print('\n[TEST] Handle think tags split across chunks');
 
